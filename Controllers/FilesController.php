@@ -26,7 +26,7 @@ class FilesController extends BackendController
     public function actionIndex()
     {
         $structure = $this->getStorage()->dir($this->getPath());
-        echo $this->render('files/list.twig', [
+        echo $this->render('files/list.html', [
             'structure' => $structure,
             'path' => $this->getPath(),
             'upFolder' => $this->getUpFolder(),

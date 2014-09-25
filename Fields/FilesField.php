@@ -1,22 +1,30 @@
 <?php
 
+namespace Modules\Files\Fields;
+
+use Mindy\Base\Mindy;
 use Mindy\Form\Fields\Field;
+use Mindy\Helper\JavaScript;
 use Mindy\Utils\RenderTrait;
 
 class FilesField extends Field
 {
     use RenderTrait;
+
     public $relatedFileField = 'file';
     public $uploadUrl;
-    public $template = "files/fields/files.twig";
+    public $template = "files/fields/files.html";
 
-    public function getUploadUrl(){
-        if (!$this->uploadUrl)
-            $this->uploadUrl = Mindy::app()->createUrl('files.files_upload');
+    public function getUploadUrl()
+    {
+        if (!$this->uploadUrl) {
+            $this->uploadUrl = Mindy::app()->urlManager->reverse('files.files_upload');
+        }
         return $this->uploadUrl;
     }
 
-    public function getData($encoded = true){
+    public function getData($encoded = true)
+    {
         $model = $this->form->getInstance();
         $data = [
             'uploadUrl' => $this->getUploadUrl(),
@@ -28,10 +36,11 @@ class FilesField extends Field
                 'fileField' => $this->relatedFileField
             ]
         ];
-        return ($encoded) ? CJavaScript::encode(($data)) : $data;
+        return ($encoded) ? JavaScript::encode(($data)) : $data;
     }
 
-    public function getQuerySet(){
+    public function getQuerySet()
+    {
         return $this->getValue()->getQuerySet();
     }
 
@@ -48,7 +57,8 @@ class FilesField extends Field
         ]);
     }
 
-    public function getListId(){
+    public function getListId()
+    {
         return $this->getId() . '_files';
     }
 }
