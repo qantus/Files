@@ -55,12 +55,13 @@ class FilesController extends BackendController
             case 'deleteAll':
                 $this->deleteAll();
                 break;
+            default:
+                echo $this->json([
+                    'statement' => 'error',
+                    'message' => FilesModule::t('Unknown action.')
+                ]);
+                break;
         }
-
-        $this->json([
-            'statement' => 'error',
-            'message' => FilesModule::t('Unknown action.')
-        ]);
     }
 
     /**
@@ -87,7 +88,7 @@ class FilesController extends BackendController
                 ];
             }
         }
-        $this->json($answer);
+        echo $this->json($answer);
     }
 
     /**
@@ -231,7 +232,7 @@ class FilesController extends BackendController
                 }
             }catch (Exception $e) {}
         }
-        $this->json($answer);
+        echo $this->json($answer);
     }
 
     /**
@@ -250,7 +251,7 @@ class FilesController extends BackendController
                 }catch (Exception $e) {};
             }
         }
-        $this->json($answer);
+        echo $this->json($answer);
     }
 
     /**
