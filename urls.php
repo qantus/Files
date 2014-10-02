@@ -17,4 +17,8 @@ return [
         'name' => 'files_upload',
         'callback' => '\Modules\Files\Controllers\UploadController:upload'
     ],
+    '/files_sort/' => [
+        'name' => 'files_sort',
+        'callback' => '\Modules\Files\Controllers\UploadController:sort'
+    ],
 ];

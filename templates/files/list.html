@@ -1,8 +1,10 @@
 {% extends request.isAjax ? "ajax.html" : "files/base.html" %}
 
-{% block content %}
+{% block heading %}
     <h1>{{ t('Files', 'files') }}</h1>
+{% endblock %}
 
+{% block content %}
     <div class="file-manager" id="zone">
         <table class="files">
             <tbody>

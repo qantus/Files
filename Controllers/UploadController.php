@@ -1,16 +1,10 @@
 <?php
 
-/**
- * All rights reserved.
- *
- * @author Falaleev Maxim
- * @email max@studio107.ru
- * @version 1.0
- * @company Studio107
- * @site http://studio107.ru
- * @date 22/05/14.05.2014 19:23
- */
+namespace Modules\Files\Controllers;
+
 use Mindy\Exception\Exception;
+use Modules\Core\Controllers\BackendController;
+use Mindy\Storage\Files\LocalFile;
 
 class UploadController extends BackendController
 {
@@ -128,7 +122,7 @@ class UploadController extends BackendController
         }
     }
 
-    function saveModel($filename)
+    protected function saveModel($filename)
     {
         $pk = isset($_POST['pk']) ? $_POST['pk'] : null;
         $class = isset($_POST['class']) ? $_POST['class'] : null;
@@ -141,14 +135,39 @@ class UploadController extends BackendController
         if ($pk) {
             $model = $class::objects()->get(['pk' => $pk]);
         }
+
         if ($model && $name) {
             $manager = $model->{$name};
             $relatedClass = $manager->getModel()->className();
             $related = new $relatedClass();
-            $filename = $related->getField($fileField)->setFile($filename);
+            $file = new LocalFile($filename);
+
+            $field = $related->getField($fileField);
+            $filename = $field->setFile($file);
             $related->{$fileField} = $filename;
             $related->{$manager->to} = $pk;
             $related->save();
+        }
+    }
+
+    public function actionSort()
+    {
+        $pkList = isset($_POST['pk']) ? $_POST['pk'] : null;
+        $field = isset($_POST['field']) ? $_POST['field'] : null;
+
+        $class = isset($_POST['class']) ? $_POST['class'] : null;
+        $name = isset($_POST['name']) ? $_POST['name'] : null;
+
+        if ($pkList && $field && $class && $name) {
+            $model = new $class;
+            $manager = $model->{$name};
+            $relatedClass = $manager->getModel()->className();
+            foreach($pkList as $position => $pk) {
+                if ($related = $relatedClass::objects()->get(['pk' => $pk])){
+                    $related->{$field} = $position;
+                    $related->save([$field]);
+                };
+            }
         }
     }
 }

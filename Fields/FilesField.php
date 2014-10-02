@@ -12,7 +12,10 @@ class FilesField extends Field
     use RenderTrait;
 
     public $relatedFileField = 'file';
+    public $relatedSortingField = 'position';
+
     public $uploadUrl;
+    public $sortUrl;
     public $template = "files/fields/files.html";
 
     public function getUploadUrl()
@@ -23,17 +26,33 @@ class FilesField extends Field
         return $this->uploadUrl;
     }
 
+    public function getSortUrl()
+    {
+        if (!$this->sortUrl) {
+            $this->sortUrl = Mindy::app()->urlManager->reverse('files.files_sort');
+        }
+        return $this->sortUrl;
+    }
+
     public function getData($encoded = true)
     {
         $model = $this->form->getInstance();
         $data = [
             'uploadUrl' => $this->getUploadUrl(),
+            'sortUrl' => $this->getSortUrl(),
             'listId' => $this->getListId(),
             'flowData' => [
                 'pk' => $model->pk,
                 'name' => $this->getName(),
                 'class' => $model::className(),
-                'fileField' => $this->relatedFileField
+                'fileField' => $this->relatedFileField,
+                Mindy::app()->request->csrf->csrfTokenName => Mindy::app()->request->csrf->csrfToken
+            ],
+            'sortData' => [
+                'field' => $this->relatedSortingField,
+                'name' => $this->getName(),
+                'class' => $model::className(),
+                Mindy::app()->request->csrf->csrfTokenName => Mindy::app()->request->csrf->csrfToken
             ]
         ];
         return ($encoded) ? JavaScript::encode(($data)) : $data;
@@ -41,19 +60,22 @@ class FilesField extends Field
 
     public function getQuerySet()
     {
-        return $this->getValue()->getQuerySet();
+        $qs = $this->form->getInstance()->getField($this->getName())->getManager()->getQuerySet();
+        return $qs->order([$this->relatedSortingField]);
     }
 
     public function render()
     {
         $items = $this->getQuerySet()->all();
+        $model = $this->form->getInstance();
 
         echo $this->renderTemplate($this->template, [
             'items' => $items,
             'data' => $this->getData(true),
             'id' => $this->getId(),
             'filesId' => $this->getListId(),
-            'fileField' => $this->relatedFileField
+            'fileField' => $this->relatedFileField,
+            'modelPk' => $model->pk
         ]);
     }
 
