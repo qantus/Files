@@ -10,6 +10,7 @@
 <ul class="large-block-grid-6 image-field-list" id="{{ filesId }}">
     {% for item in items %}
         <li data-pk="{{ item.pk }}">
+            <span class="remove">&times;</span>
             <img src="{{ item.getField(fileField).url }}" alt=""/>
         </li>
     {% else %}

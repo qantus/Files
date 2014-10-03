@@ -170,4 +170,19 @@ class UploadController extends BackendController
             }
         }
     }
+
+    public function actionDelete()
+    {
+        $pk = isset($_POST['pk']) ? $_POST['pk'] : null;
+        $class = isset($_POST['class']) ? $_POST['class'] : null;
+        $name = isset($_POST['name']) ? $_POST['name'] : null;
+        if ($pk && $class && $name) {
+            $model = new $class;
+            $manager = $model->{$name};
+            $relatedClass = $manager->getModel()->className();
+            if ($related = $relatedClass::objects()->get(['pk' => $pk])){
+                $related->delete();
+            }
+        }
+    }
 }

@@ -16,6 +16,7 @@ class FilesField extends Field
 
     public $uploadUrl;
     public $sortUrl;
+    public $deleteUrl;
     public $template = "files/fields/files.html";
 
     public function getUploadUrl()
@@ -34,12 +35,21 @@ class FilesField extends Field
         return $this->sortUrl;
     }
 
+    public function getDeleteUrl()
+    {
+        if (!$this->deleteUrl) {
+            $this->deleteUrl = Mindy::app()->urlManager->reverse('files.files_delete');
+        }
+        return $this->deleteUrl;
+    }
+
     public function getData($encoded = true)
     {
         $model = $this->form->getInstance();
         $data = [
             'uploadUrl' => $this->getUploadUrl(),
             'sortUrl' => $this->getSortUrl(),
+            'deleteUrl' => $this->getDeleteUrl(),
             'listId' => $this->getListId(),
             'flowData' => [
                 'pk' => $model->pk,
@@ -50,6 +60,11 @@ class FilesField extends Field
             ],
             'sortData' => [
                 'field' => $this->relatedSortingField,
+                'name' => $this->getName(),
+                'class' => $model::className(),
+                Mindy::app()->request->csrf->csrfTokenName => Mindy::app()->request->csrf->csrfToken
+            ],
+            'deleteData' => [
                 'name' => $this->getName(),
                 'class' => $model::className(),
                 Mindy::app()->request->csrf->csrfTokenName => Mindy::app()->request->csrf->csrfToken
