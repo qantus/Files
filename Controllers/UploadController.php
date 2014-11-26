@@ -140,12 +140,11 @@ class UploadController extends BackendController
             $manager = $model->{$name};
             $relatedClass = $manager->getModel()->className();
             $related = new $relatedClass();
-            $file = new LocalFile($filename);
 
-            $field = $related->getField($fileField);
-            $filename = $field->setFile($file);
             $related->{$fileField} = $filename;
+
             $related->{$manager->to} = $pk;
+
             $related->save();
         }
     }
