@@ -147,6 +147,12 @@ class UploadController extends BackendController
 
             $related->save();
         }
+
+        try {
+            unlink($filename);
+        } catch (\Exception $e) {
+
+        }
     }
 
     public function actionSort()
