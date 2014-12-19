@@ -87,15 +87,20 @@ class FilesField extends Field
         echo $this->renderTemplate($this->template, [
             'items' => $items,
             'data' => $this->getData(true),
-            'id' => $this->getId(),
+            'id' => $this->uniqueId(),
             'filesId' => $this->getListId(),
             'fileField' => $this->relatedFileField,
             'modelPk' => $model->pk
         ]);
     }
 
+    public function uniqueId()
+    {
+        return $this->getId() . '_' . $this->name;
+    }
+
     public function getListId()
     {
-        return $this->getId() . '_files';
+        return $this->uniqueId() . '_files';
     }
 }
