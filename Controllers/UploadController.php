@@ -2,7 +2,9 @@
 
 namespace Modules\Files\Controllers;
 
+use Mindy\Base\Mindy;
 use Mindy\Exception\Exception;
+use Mindy\Helper\Alias;
 use Modules\Core\Controllers\BackendController;
 use Mindy\Storage\Files\LocalFile;
 
@@ -16,8 +18,10 @@ class UploadController extends BackendController
      */
     public function actionUpload()
     {
+        $this->tempDir = Alias::get('www') . '/temp';
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $temp_dir = 'temp/' . $_GET['flowIdentifier'];
+            $temp_dir = $this->tempDir . '/' . $_GET['flowIdentifier'];
             $chunk_file = $temp_dir . '/' . $_GET['flowFilename'] . '.part' . $_GET['flowChunkNumber'];
             if (file_exists($chunk_file)) {
                 header("HTTP/1.0 200 Ok");
@@ -35,7 +39,7 @@ class UploadController extends BackendController
 
             // init the destination file (format <filename.ext>.part<#chunk>
             // the file is stored in a temporary directory
-            $temp_dir = 'temp/' . $_POST['flowIdentifier'];
+            $temp_dir = $this->tempDir . '/' . $_POST['flowIdentifier'];
             $dest_file = $temp_dir . '/' . $_POST['flowFilename'] . '.part' . $_POST['flowChunkNumber'];
 
             // create the temporary directory
