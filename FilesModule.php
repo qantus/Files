@@ -23,7 +23,7 @@ class FilesModule extends Module
             'items' => [
                 [
                     'name' => self::t('Files'),
-                    'url' => 'files.index'
+                    'url' => 'files:index'
                 ]
             ]
         ];

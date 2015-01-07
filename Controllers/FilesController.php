@@ -12,14 +12,16 @@ namespace Modules\Files\Controllers;
  * @site http://studio107.ru
  * @date 22/05/14.05.2014 19:23
  */
+use Exception;
 use Mindy\Base\Mindy;
-use \Exception;
+use Mindy\Helper\File;
 use Modules\Core\Controllers\BackendController;
 use Modules\Files\FilesModule;
 
 class FilesController extends BackendController
 {
-    public function getStorage() {
+    public function getStorage()
+    {
         return Mindy::app()->storage;
     }
 
@@ -138,30 +140,6 @@ class FilesController extends BackendController
     }
 
     /**
-     * Рекурсивное удаление папки
-     * @param $dir
-     * @return bool|null
-     */
-    function rrmdir($dir)
-    {
-        if (is_dir($dir)) {
-            $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (filetype($dir . DIRECTORY_SEPARATOR . $object) == "dir") {
-                        $this->rrmdir($dir . DIRECTORY_SEPARATOR . $object);
-                    } else {
-                        unlink($dir . DIRECTORY_SEPARATOR . $object);
-                    }
-                }
-            }
-            reset($objects);
-            return rmdir($dir);
-        }
-        return null;
-    }
-
-    /**
      * Сборка файлов из чанка
      * @param $temp_dir
      * @param $fileName
@@ -201,9 +179,9 @@ class FilesController extends BackendController
             // rename the temporary directory (to avoid access from other
             // concurrent chunks uploads) and than delete it
             if (rename($temp_dir, $temp_dir . '_UNUSED')) {
-                $this->rrmdir($temp_dir . '_UNUSED');
+                File::removeDirectory($temp_dir . '_UNUSED');
             } else {
-                $this->rrmdir($temp_dir);
+                File::removeDirectory($temp_dir);
             }
 
             return $this->getStorage()->url($finalDestination);
@@ -230,7 +208,8 @@ class FilesController extends BackendController
                         'message' => FilesModule::t('Deleting committed successfully')
                     ];
                 }
-            }catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
         }
         echo $this->json($answer);
     }
@@ -248,7 +227,8 @@ class FilesController extends BackendController
             foreach ($files as $file) {
                 try {
                     $this->getStorage()->delete($file);
-                }catch (Exception $e) {};
+                } catch (Exception $e) {
+                };
             }
         }
         echo $this->json($answer);
@@ -261,16 +241,16 @@ class FilesController extends BackendController
     public function getPath($filename = '')
     {
         $path = '';
-        if (isset($_GET['path'])){
+        if (isset($_GET['path'])) {
             $path = $_GET['path'];
-        }elseif (isset($_POST['path'])){
+        } elseif (isset($_POST['path'])) {
             $path = $_POST['path'];
         }
         $path = ltrim($path, DIRECTORY_SEPARATOR);
 
-        if ($path){
+        if ($path) {
             return $path . ($filename ? DIRECTORY_SEPARATOR . $filename : '');
-        }else{
+        } else {
             return $filename;
         }
     }
