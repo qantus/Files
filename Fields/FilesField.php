@@ -22,7 +22,7 @@ class FilesField extends Field
     public function getUploadUrl()
     {
         if (!$this->uploadUrl) {
-            $this->uploadUrl = Mindy::app()->urlManager->reverse('files.files_upload');
+            $this->uploadUrl = Mindy::app()->urlManager->reverse('files:files_upload');
         }
         return $this->uploadUrl;
     }
@@ -30,7 +30,7 @@ class FilesField extends Field
     public function getSortUrl()
     {
         if (!$this->sortUrl) {
-            $this->sortUrl = Mindy::app()->urlManager->reverse('files.files_sort');
+            $this->sortUrl = Mindy::app()->urlManager->reverse('files:files_sort');
         }
         return $this->sortUrl;
     }
@@ -38,7 +38,7 @@ class FilesField extends Field
     public function getDeleteUrl()
     {
         if (!$this->deleteUrl) {
-            $this->deleteUrl = Mindy::app()->urlManager->reverse('files.files_delete');
+            $this->deleteUrl = Mindy::app()->urlManager->reverse('files:files_delete');
         }
         return $this->deleteUrl;
     }
