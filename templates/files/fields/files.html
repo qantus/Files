@@ -1,31 +1,27 @@
 {% if modelPk %}
+    <section id="{{ id }}" class="files-frop">
+        <p class="info">{{ t('Drop files here or click to upload manually', 'files') }}</p>
+        <div class="progress">
+            <div class="meter progress_bar"></div>
+        </div>
+    </section>
 
-<section id="{{ id }}" class="files-frop">
-    <p class="info">{{ t('Drop files here or click to upload manually', 'files') }}</p>
-    <div class="progress">
-        <div class="meter progress_bar"></div>
-    </div>
-</section>
-
-<ul class="large-block-grid-6 image-field-list" id="{{ filesId }}">
-    {% for item in items %}
-        <li data-pk="{{ item.pk }}">
-            <span class="remove">&times;</span>
-            <img src="{{ item.getField(fileField).url }}" alt=""/>
-        </li>
+    {% if items|length > 0 %}
+        <ul class="large-block-grid-6 image-field-list" id="{{ filesId }}">
+            {% for item in items %}
+                <li data-pk="{{ item.pk }}">
+                    <span class="remove">&times;</span>
+                    <img src="{{ item.getField(fileField).url }}" alt=""/>
+                </li>
+            {% endfor %}
+        </ul>
     {% else %}
-        <li class="empty">
-            {{ t('There are no files here', 'files') }}
-        </li>
-    {% endfor %}
-</ul>
+        <p>{{ t('There are no files here', 'files') }}</p>
+    {% endif %}
 
-<script type='text/javascript'>
-    $(function(){
+    <script type='text/javascript'>
         $('#{{ id }}').filesField({{ data|raw }});
-    });
-</script>
-
+    </script>
 {% else %}
-    Для редактирования данных, пожалуйста, сохраните модель
+    {{ t('For upload files please save model', 'files') }}
 {% endif %}

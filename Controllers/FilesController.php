@@ -132,8 +132,9 @@ class FilesController extends BackendController
 
                 $fileName = $this->getPath($name);
                 $url = $this->createFileFromChunks($temp_dir, $_POST['flowFilename'], $_POST['flowChunkSize'], $_POST['flowTotalSize'], $fileName);
-                if ($url)
+                if ($url) {
                     echo $url;
+                }
                 echo '';
             }
         }
@@ -170,7 +171,7 @@ class FilesController extends BackendController
                     fwrite($fp, file_get_contents($temp_dir . DIRECTORY_SEPARATOR . $fileName . '.part' . $i));
                 }
                 fclose($fp);
-                $this->getStorage()->save($finalDestination, file_get_contents($temp_file));
+                $resultName = $this->getStorage()->save($finalDestination, file_get_contents($temp_file));
                 unlink($temp_file);
             } else {
                 return false;
@@ -184,7 +185,7 @@ class FilesController extends BackendController
                 File::removeDirectory($temp_dir);
             }
 
-            return $this->getStorage()->url($finalDestination);
+            return $this->getStorage()->url($resultName);
         }
 
         return null;

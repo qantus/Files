@@ -27,7 +27,8 @@
             {% for directory in structure.directories %}
                 <tr class="dir">
                     <td class="file-check">
-                        <input class="delete-checker" type="checkbox" name="deleteFiles[]" value="{{ directory.path }}"/>
+                        <input class="delete-checker" type="checkbox" name="deleteFiles[]"
+                               value="{{ directory.path }}"/>
                     </td>
                     <td class="file-icon">
                         <i class="icon-folder"></i>
@@ -90,6 +91,7 @@
             <div class="info-table">
                 <div class="cell">
                     <h1>{{ t('Uploading, please wait...', 'files') }}</h1>
+
                     <p class="progress">
                         <span id="progress_bar" class="meter"></span>
                     </p>
@@ -105,22 +107,19 @@
             </div>
 
         </div>
-        <div class="messages">
-
-        </div>
-
+        <div class="messages"></div>
     </div>
 
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             $('.file-manager').fileapi({
-                'startPath': '{{ path }}',
-                'uploadUrl': '{% url 'files.upload' %}',
-                'listUrl': '{% url 'files.index' %}',
-                'apiUrl': '{% url 'files.api' %}',
-                'csrfName': '{{ request.csrf.name }}',
-                'csrf': '{{ request.csrf.value }}',
-                'prevention': '{{ t('Do you really want to delete the file?', 'files') }}'
+                startPath: '{{ path }}',
+                uploadUrl: '{% url 'files.upload' %}',
+                listUrl: '{% url 'files.index' %}',
+                apiUrl: '{% url 'files.api' %}',
+                csrfName: '{{ request.csrf.name }}',
+                csrf: '{{ request.csrf.value }}',
+                prevention: '{{ t('Do you really want to delete the file?', 'files') }}'
             });
         });
     </script>
