@@ -114,9 +114,9 @@
         $(function () {
             $('.file-manager').fileapi({
                 startPath: '{{ path }}',
-                uploadUrl: '{% url 'files.upload' %}',
-                listUrl: '{% url 'files.index' %}',
-                apiUrl: '{% url 'files.api' %}',
+                uploadUrl: '{% url 'files:upload' %}',
+                listUrl: '{% url 'files:index' %}',
+                apiUrl: '{% url 'files:api' %}',
                 csrfName: '{{ request.csrf.name }}',
                 csrf: '{{ request.csrf.value }}',
                 prevention: '{{ t('Do you really want to delete the file?', 'files') }}'

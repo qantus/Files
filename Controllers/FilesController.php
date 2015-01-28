@@ -27,7 +27,12 @@ class FilesController extends BackendController
 
     public function actionIndex()
     {
+        $module = $this->getModule();
+        $this->addBreadcrumb($module->t('Files'));
+        $this->addTitle($module->t('Files'));
+
         $structure = $this->getStorage()->dir($this->getPath());
+
         echo $this->render('files/list.html', [
             'structure' => $structure,
             'path' => $this->getPath(),
