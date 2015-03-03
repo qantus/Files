@@ -10,6 +10,7 @@ return array (
   'Deleting committed successfully' => 'Удалено',
   'Drop files here or click to upload manually' => 'Перетащите файлы сюда или щелкните для их загрузки',
   'There are no files here' => 'Здесь пока нет файлов',
+  'For upload files please save model' => 'Для загрузки файлов сохраните объект',
   'Select files to upload' => 'Выберите файлы для загрузки',
   'Remove selected files' => 'Удалить выбранные',
   'Folder name' => 'Имя папки.',
