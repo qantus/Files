@@ -79,12 +79,12 @@ class FilesField extends Field
         return $qs->order([$this->relatedSortingField]);
     }
 
-    public function render()
+    public function renderInput()
     {
         $items = $this->getQuerySet()->all();
         $model = $this->form->getInstance();
-
-        echo $this->renderTemplate($this->template, [
+ 
+        return $this->renderTemplate($this->template, [
             'items' => $items,
             'data' => $this->getData(true),
             'id' => $this->uniqueId(),
