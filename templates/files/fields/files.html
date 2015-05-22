@@ -6,7 +6,7 @@
         </div>
     </section>
 
-    {% if items|length > 0 %}
+    <section class="files-content" id="{{ contentId }}">
         <ul class="large-block-grid-6 image-field-list" id="{{ filesId }}">
             {% for item in items %}
                 <li data-pk="{{ item.pk }}">
@@ -15,10 +15,9 @@
                 </li>
             {% endfor %}
         </ul>
-    {% else %}
-        <p>{{ t('There are no files here', 'files') }}</p>
-    {% endif %}
 
+        <p class="empty-info {% if items|length > 0 %}hide{% endif %}">{{ t('There are no files here', 'files') }}</p>
+    </section>
     <script type='text/javascript'>
         $('#{{ id }}').filesField({{ data|raw }});
     </script>

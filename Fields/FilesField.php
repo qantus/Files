@@ -51,6 +51,7 @@ class FilesField extends Field
             'sortUrl' => $this->getSortUrl(),
             'deleteUrl' => $this->getDeleteUrl(),
             'listId' => $this->getListId(),
+            'contentId' => $this->getContentId(),
             'flowData' => [
                 'pk' => $model->pk,
                 'name' => $this->getName(),
@@ -89,6 +90,7 @@ class FilesField extends Field
             'data' => $this->getData(true),
             'id' => $this->uniqueId(),
             'filesId' => $this->getListId(),
+            'contentId' => $this->getContentId(),
             'fileField' => $this->relatedFileField,
             'modelPk' => $model->pk
         ]);
@@ -102,5 +104,10 @@ class FilesField extends Field
     public function getListId()
     {
         return $this->uniqueId() . '_files';
+    }
+
+    public function getContentId()
+    {
+        return $this->uniqueId() . '_content';
     }
 }
